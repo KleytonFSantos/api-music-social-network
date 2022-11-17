@@ -20,7 +20,6 @@ use App\Http\Controllers\EditProfileController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('/get-users', [AuthController::class, 'getUsers']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/user', function (Request $request) {
@@ -28,4 +27,5 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     });
     Route::get('/logout', [AuthController::class, 'logout']);
     Route::post('/edit-profile', [EditProfileController::class, 'editProfile']);
+    Route::get('/get-user', [AuthController::class, 'getUser']);
 });

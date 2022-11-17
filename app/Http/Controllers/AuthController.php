@@ -82,10 +82,18 @@ class AuthController extends Controller
         ], 201);
     }
 
-    public function getUsers()
+    public function getUser()
     {
-        $data = User::all();
+        $user = auth()->user();
+        $userProfile = $user->userProfile;
 
-        return response($data);
+        return [
+            'first_name' => $user->first_name,
+            'last_name' => $user->last_name,
+            'profile_image' => $userProfile->profile_image,
+            'city' => $userProfile->city,
+            'state' => $userProfile->state,
+            'description' => $userProfile->description
+        ];
     }
 }
