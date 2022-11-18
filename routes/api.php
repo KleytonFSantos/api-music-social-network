@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EditProfileController;
+use App\Http\Controllers\SongsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +26,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-    Route::get('/logout', [AuthController::class, 'logout']);
+
+    Route::controller(AuthController::class)->group(function () {
+        Route::get('/logout', 'logout');
+        Route::get('/get-user', 'getUser');
+    });
     Route::post('/edit-profile', [EditProfileController::class, 'editProfile']);
-    Route::get('/get-user', [AuthController::class, 'getUser']);
+    Route::post('/add-song', [SongsController::class, 'store']);
 });

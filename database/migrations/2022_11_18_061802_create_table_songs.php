@@ -13,14 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_profile', function (Blueprint $table) {
+        Schema::create('songs', function (Blueprint $table) {
             $table->id();
-            $table->string('description');
-            $table->string('profile_image')->nullable();
-            $table->string('city');
-            $table->string('state');
+            $table->string('title');
+            $table->string('namefile');
             $table->foreignId('user_id')->constrained('users');
-            $table->timestamps();
         });
     }
 
@@ -31,6 +28,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_profile');
+        Schema::dropIfExists('songs');
+
     }
 };
