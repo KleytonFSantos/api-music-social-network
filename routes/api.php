@@ -32,5 +32,8 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/get-user', 'getUser');
     });
     Route::post('/edit-profile', [EditProfileController::class, 'editProfile']);
-    Route::post('/add-song', [SongsController::class, 'store']);
+    Route::controller(SongsController::class)->group(function () {
+        Route::post('add-song', 'store');
+        Route::get('get-songs/{user_id}', 'index');
+    });
 });

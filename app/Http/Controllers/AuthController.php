@@ -88,6 +88,7 @@ class AuthController extends Controller
         $userProfile = $user->userProfile;
 
         return [
+            'user_id' => $user->id,
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
             'profile_image' => $userProfile->profile_image,

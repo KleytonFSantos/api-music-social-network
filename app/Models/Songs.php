@@ -16,6 +16,7 @@ class Songs extends Model
      */
     protected $fillable = [
         'title',
-        'namefile'
+        'namefile',
+        'user_id',
     ];
 }
