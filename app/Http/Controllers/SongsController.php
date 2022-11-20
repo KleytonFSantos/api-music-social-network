@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use File;
 use Illuminate\Http\Request;
 use App\Models\Songs;
 use App\Models\User;
@@ -69,6 +70,26 @@ class SongsController extends Controller
             return response(['message'=>'Uploaded with success'], 201);
         } catch (\Exception $e) {
             abort(400, $e);
+        }
+    }
+
+    /**
+     * Delete a song of the resource.
+     *
+     * @param int $user_id
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy( $user_id, $song )
+    {
+        try {
+            $songs_by_user = $this->model::where('user_id', $user_id)->where('id', $song)->first();
+            $deleteSong = File::delete(public_path('storage/songs/' . $user_id . '/' . $songs_by_user->namefile));
+            $songs_by_user->delete();
+
+            return response(['message' => 'Song deleted successfully'], 200);
+        } catch (\Exception $e) {
+          return response(['message' => $e], 500);
         }
     }
 }
