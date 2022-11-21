@@ -42,7 +42,10 @@ class EditProfileController extends Controller
             }
 
 
-            return response(['message'=>'Updated with success'], 201);
+            return response([
+                'message'=>'Updated with success',
+                'user_id' => $user->id,
+            ], 201);
         } catch (\Exception $e) {
             abort(400, $e);
         }
