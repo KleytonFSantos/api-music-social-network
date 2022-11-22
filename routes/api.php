@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EditProfileController;
 use App\Http\Controllers\SongsController;
+use App\Http\Controllers\VideosController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,10 +32,17 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::get('/logout', 'logout');
         Route::get('/get-user', 'getUser');
     });
+
     Route::post('/edit-profile', [EditProfileController::class, 'editProfile']);
+
     Route::controller(SongsController::class)->group(function () {
         Route::post('add-song', 'store');
         Route::get('get-songs/{user_id}', 'index');
         Route::delete('delete-song/{user_id}/{song}', 'destroy');
+    });
+
+    Route::controller(VideosController::class)->group(function () {
+        Route::post('add-youtube-video/{user_id}', 'store');
+        Route::get('videos/{user_id}', 'index');
     });
 });

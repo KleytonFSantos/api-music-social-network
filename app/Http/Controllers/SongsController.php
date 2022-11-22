@@ -89,7 +89,7 @@ class SongsController extends Controller
 
             return response(['message' => 'Song deleted successfully'], 200);
         } catch (\Exception $e) {
-          return response(['message' => $e], 500);
+          return response(['message' => $e], 400);
         }
     }
 }

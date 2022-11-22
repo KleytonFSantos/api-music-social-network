@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\UserProfile;
+use App\Models\Songs;
+use App\Models\Videos;
 
 class User extends Authenticatable
 {
@@ -50,5 +53,13 @@ class User extends Authenticatable
     public function userProfile()
     {
        return $this->hasOne(UserProfile::class, 'user_id');
+    }
+    public function song()
+    {
+       return $this->hasOne(Songs::class, 'user_id');
+    }
+    public function video()
+    {
+       return $this->hasOne(Videos::class, 'user_id');
     }
 }
