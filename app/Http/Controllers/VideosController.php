@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Videos;
+use App\Models\Video;
 
 class VideosController extends Controller
 {
     private $model;
 
     public function __construct(
-        Videos $model
+        Video $model
     )
     {
         $this->model = $model;
@@ -56,6 +56,26 @@ class VideosController extends Controller
             return response(['message' => 'Video created successfully'], 201);
         } catch( \Exception $e ) {
             abort(400, $e->getMessage());
+        }
+    }
+
+    /**
+     *  Destroy Videos Function
+     *
+     * @param int $user_id
+     * @param int $video
+     *
+     * @return \Illuminate\Http\Response
+    */
+    public function destroy( $user_id, $video )
+    {
+        try {
+            $videos_by_user = $this->model::where('user_id', $user_id)->where('id', $video)->first();
+            $videos_by_user->delete();
+
+            return response(['message' => 'Video deleted successfully'], 200);
+        } catch (\Exception $e) {
+          return response(['message' => $e], 400);
         }
     }
 }

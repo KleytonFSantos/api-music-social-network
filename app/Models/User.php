@@ -8,8 +8,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\UserProfile;
-use App\Models\Songs;
-use App\Models\Videos;
+use App\Models\Song;
+use App\Models\Video;
+use App\Models\Post;
 
 class User extends Authenticatable
 {
@@ -52,14 +53,21 @@ class User extends Authenticatable
 
     public function userProfile()
     {
-       return $this->hasOne(UserProfile::class, 'user_id');
+       return $this->hasOne(UserProfile::class);
     }
+
     public function song()
     {
-       return $this->hasOne(Songs::class, 'user_id');
+       return $this->hasMany(Song::class);
     }
+
     public function video()
     {
-       return $this->hasOne(Videos::class, 'user_id');
+       return $this->hasMany(Video::class);
+    }
+
+    public function post()
+    {
+       return $this->hasMany(Post::class);
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use File;
 use Illuminate\Http\Request;
-use App\Models\Songs;
+use App\Models\Song;
 use App\Models\User;
 
 class SongsController extends Controller
@@ -12,7 +12,7 @@ class SongsController extends Controller
     protected $model;
 
     public function __construct(
-        Songs $model
+        Song $model
     )
     {
         $this->model = $model;

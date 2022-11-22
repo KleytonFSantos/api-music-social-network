@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Songs;
+use App\Models\Song;
 use App\Models\User;
 
 class AuthController extends Controller
@@ -87,7 +87,7 @@ class AuthController extends Controller
     {
         $user = auth()->user();
         $userProfile = $user->userProfile;
-        $songs = Songs::where('user_id', $user->id)->get();
+        $songs = Song::where('user_id', $user->id)->get();
         $totalSongs = $songs->count();
         return [
             'user_id' => $user->id,
