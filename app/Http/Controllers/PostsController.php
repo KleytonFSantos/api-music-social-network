@@ -72,7 +72,7 @@ class PostsController extends Controller
                 'description' => 'required',
             ]);
 
-            $video = $this->model::create([
+            $post = $this->model::create([
                 'title' => $request->title,
                 'image' => $request->image,
                 'description' => $request->description,
@@ -85,7 +85,39 @@ class PostsController extends Controller
         }
     }
 
-      /**
+    /**
+     *  Update Posts Function
+     *
+     * @param int $user_id
+     * @param int $post
+     *
+     * @param \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+    */
+    public function update( Request $request, $user_id, $post )
+    {
+        try {
+            $request->validate([
+                'title' => 'required|min:3',
+                'image' => 'required',
+                'description' => 'required',
+            ]);
+
+            $post = $this->model::where('user_id', $user_id)->where('id', $post)->first();
+
+            $post->update([
+                'title' => $request->title,
+                'image' => $request->image,
+                'description' => $request->description,
+            ]);
+
+            return response(['message' => 'Post updated successfully'], 200);
+        } catch (\Exception $e) {
+            return response(['message' => $e->getMessage()], 400);
+        }
+    }
+
+    /**
      *  Destroy Posts Function
      *
      * @param int $user_id
@@ -101,7 +133,7 @@ class PostsController extends Controller
 
             return response(['message' => 'Post deleted successfully'], 200);
         } catch (\Exception $e) {
-          return response(['message' => $e], 400);
+          return response(['message' => $e->getMessage()], 400);
         }
     }
 }

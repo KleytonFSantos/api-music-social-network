@@ -37,21 +37,22 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/edit-profile', [EditProfileController::class, 'editProfile']);
 
     Route::controller(SongsController::class)->group(function () {
-        Route::post('add-song', 'store');
         Route::get('get-songs/{user_id}', 'index');
+        Route::post('add-song', 'store');
         Route::delete('{user_id}/delete-song/{song}', 'destroy');
     });
 
     Route::controller(VideosController::class)->group(function () {
-        Route::post('add-youtube-video/{user_id}', 'store');
         Route::get('videos/{user_id}', 'index');
+        Route::post('add-youtube-video/{user_id}', 'store');
         Route::delete('{user_id}/delete-youtube-videos/{video}', 'destroy');
     });
 
     Route::controller(PostsController::class)->group(function () {
-        Route::post('add-post/{user_id}', 'store');
-        Route::get('{user_id}/post/{post_id}', 'postById');
         Route::get('posts/{user_id}', 'index');
+        Route::get('{user_id}/post/{post_id}', 'postById');
+        Route::post('add-post/{user_id}', 'store');
+        Route::put('{user_id}/edit-post/{post}', 'update');
         Route::delete('{user_id}/delete-post/{video}', 'destroy');
     });
 });
