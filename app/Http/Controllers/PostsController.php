@@ -54,15 +54,6 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Http\Response
     */
-
-     /**
-     *  Store Posts Function
-     *
-     * @param int $user_id
-     * @param  \Illuminate\Http\Request  $request
-     *
-     * @return \Illuminate\Http\Response
-    */
     public function store(Request $request, $user_id)
     {
         try {

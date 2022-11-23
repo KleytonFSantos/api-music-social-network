@@ -7,6 +7,7 @@ use App\Http\Controllers\EditProfileController;
 use App\Http\Controllers\SongsController;
 use App\Http\Controllers\VideosController;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\FeedController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,4 +56,6 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::put('{user_id}/edit-post/{post}', 'update');
         Route::delete('{user_id}/delete-post/{video}', 'destroy');
     });
+
+    Route::get('posts', [FeedController::class, 'index']);
 });
