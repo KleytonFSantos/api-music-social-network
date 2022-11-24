@@ -34,6 +34,6 @@ class Post extends Model
         'user_profile', 'user_profile.user_id', '=','posts.user_id'
        )
        ->orderBy('created_at', 'desc')
-       ->get();
+       ->paginate(15);
     }
 }

@@ -59,3 +59,4 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
     Route::get('posts', [FeedController::class, 'index']);
 });
+
