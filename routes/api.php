@@ -8,6 +8,7 @@ use App\Http\Controllers\SongsController;
 use App\Http\Controllers\VideosController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\FeedController;
+use App\Http\Controllers\LikesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -55,8 +56,9 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('add-post/{user_id}', 'store');
         Route::put('{user_id}/edit-post/{post}', 'update');
         Route::delete('{user_id}/delete-post/{video}', 'destroy');
+        Route::get('posts', [FeedController::class, 'index']);
+        Route::get('{post_id}/add-like/{user_id}', [LikesController::class, 'store']);
     });
 
-    Route::get('posts', [FeedController::class, 'index']);
 });
 

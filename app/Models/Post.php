@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
+use App\Models\Like;
 
 class Post extends Model
 {
@@ -16,6 +17,11 @@ class Post extends Model
         'description',
         'user_id'
     ];
+
+    public function like()
+    {
+       return $this->hasMany(Like::class);
+    }
 
     public function allPosts()
     {
@@ -34,6 +40,6 @@ class Post extends Model
         'user_profile', 'user_profile.user_id', '=','posts.user_id'
        )
        ->orderBy('created_at', 'desc')
-       ->paginate(15);
+       ->paginate(7);
     }
 }
