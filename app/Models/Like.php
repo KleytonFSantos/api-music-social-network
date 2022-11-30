@@ -15,8 +15,13 @@ class Like extends Model
         'liked',
     ];
 
-    public function likeExists(int $user_id,int $post_id)
+    public function likeExists(int $post_id,int $user_id)
     {
         return $this::where('user_id', $user_id)->where('post_id', $post_id)->first();
+    }
+
+    public function qtdLikes(int $post_id)
+    {
+        return $this::where('post_id', $post_id)->where('liked', 1)->count();
     }
 }

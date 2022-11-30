@@ -47,7 +47,7 @@ class EditProfileController extends Controller
                 'user_id' => $user->id,
             ], 201);
         } catch (\Exception $e) {
-            abort(400, $e);
+            abort(400, $e->getMessage());
         }
     }
 }

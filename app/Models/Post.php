@@ -20,7 +20,7 @@ class Post extends Model
 
     public function like()
     {
-       return $this->hasMany(Like::class);
+       return $this->hasMany(Like::class)->where('liked', true);
     }
 
     public function allPosts()
