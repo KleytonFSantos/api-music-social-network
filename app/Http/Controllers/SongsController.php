@@ -13,8 +13,7 @@ class SongsController extends Controller
 
     public function __construct(
         Song $model
-    )
-    {
+    ) {
         $this->model = $model;
     }
 
@@ -31,7 +30,7 @@ class SongsController extends Controller
         $songs_by_user = $this->model::where('user_id', $user_id)->get();
         $user = User::find($user_id);
 
-        foreach($songs_by_user as $song) {
+        foreach ($songs_by_user as $song) {
             array_push($songs, $song);
         }
 
@@ -45,7 +44,7 @@ class SongsController extends Controller
     /**
      *  Store Songs Function
      *@param  \Illuminate\Http\Request  $request
-    */
+     */
     public function store(Request $request)
     {
 
@@ -54,7 +53,8 @@ class SongsController extends Controller
                 'title' => 'string|min:3|required',
                 'song' => 'file|mimes:application/octet-stream,audio/mpeg,mpga,mp3,wav',
             ]);
-            if( $request->hasFile('song')){
+
+            if ($request->hasFile('song')) {
                 $file = $request->file('song');
                 $original_name = $file->getClientOriginalName();
                 $extension = $file->getClientOriginalExtension();
@@ -65,11 +65,13 @@ class SongsController extends Controller
             $song = $this->model::create([
                 'user_id' => auth()->user()->id,
                 'title' => $request->title,
+                'artist' => $request->artist,
+                'cover' => $request->coverImage,
                 'namefile' => $original_name,
             ]);
-            return response(['message'=>'Uploaded with success'], 201);
+            return response(['message' => 'Uploaded with success'], 201);
         } catch (\Exception $e) {
-            abort(400, $e);
+            abort(400, $e->getMessage());
         }
     }
 
@@ -80,7 +82,7 @@ class SongsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function destroy( $user_id, $song )
+    public function destroy($user_id, $song)
     {
         try {
             $songs_by_user = $this->model::where('user_id', $user_id)->where('id', $song)->first();
@@ -89,7 +91,7 @@ class SongsController extends Controller
 
             return response(['message' => 'Song deleted successfully'], 200);
         } catch (\Exception $e) {
-          return response(['message' => $e], 400);
+            return response(['message' => $e], 400);
         }
     }
 }

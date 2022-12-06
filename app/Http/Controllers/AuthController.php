@@ -92,6 +92,7 @@ class AuthController extends Controller
         $totalSongs = $songs->count();
         return [
             'user_id' => $user->id,
+            'email' => $user->email,
             'songs' => $totalSongs,
             'first_name' => $user->first_name,
             'last_name' => $user->last_name,
