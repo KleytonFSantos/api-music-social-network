@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use File;
 use Illuminate\Http\Request;
 use App\Models\Song;
+use App\Http\Services\UploadSongsService;
 use App\Models\User;
 
 class SongsController extends Controller
@@ -44,8 +45,10 @@ class SongsController extends Controller
     /**
      *  Store Songs Function
      *@param  \Illuminate\Http\Request  $request
+     *
+     *@param  \App\Http\Services\UploadSongsService $service
      */
-    public function store(Request $request)
+    public function store(Request $request, UploadSongsService $service)
     {
 
         try {
@@ -57,9 +60,7 @@ class SongsController extends Controller
             if ($request->hasFile('song')) {
                 $file = $request->file('song');
                 $original_name = $file->getClientOriginalName();
-                $extension = $file->getClientOriginalExtension();
-                $filename = $original_name . $extension;
-                $path = $file->storeAs('public/songs/' . auth()->user()->id, $original_name);
+                $service->uploadSongs($file);
             }
 
             $song = $this->model::create([
