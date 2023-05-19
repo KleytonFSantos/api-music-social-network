@@ -2,21 +2,17 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Carbon\Carbon;
 
 class FeedResource extends JsonResource
 {
-    /**
-     * Transform the resource into an array.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return array|\Illuminate\Contracts\Support\Arrayable|\JsonSerializable
-     */
-    public function toArray($request)
+    public function toArray(Request $request): array
     {
         $authUser = auth()->user()->id;
         $userLiked = $this->like->where('user_id', $authUser)->where('liked', 1)->first();
+        $date = Carbon::parse($this->created_at)->locale('pt-BR')->diffForHumans(Carbon::now());
 
         return [
             'id' => $this->id,
@@ -26,9 +22,9 @@ class FeedResource extends JsonResource
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'likes' => $this->like->count(),
-            'user_liked' => $userLiked ? true : false,
+            'user_liked' => !!$userLiked,
             'profile_image' => $this->profile_image,
-            'data' => Carbon::parse($this->created_at)->locale('pt-BR')->diffForHumans(Carbon::now()),
+            'data' => $date,
         ];
     }
 }

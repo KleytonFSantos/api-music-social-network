@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\User;
-use App\Models\Like;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use \Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class Post extends Model
 {
@@ -18,7 +20,7 @@ class Post extends Model
         'user_id'
     ];
 
-    public function like()
+    public function like(): HasMany
     {
        return $this->hasMany(Like::class)->where('liked', true);
     }
@@ -41,5 +43,24 @@ class Post extends Model
        )
        ->orderBy('created_at', 'desc')
        ->paginate(7);
+    }
+
+    public function findPostsByUserId(): ?Collection
+    {
+       return Auth::user()->post()->get();
+    }
+
+    public function findPostById(int $post): ?Collection
+    {
+        return $this->query()
+            ->where('user_id', Auth::user()->id)
+            ->where('id', $post)
+            ->get();
+    }
+
+    public function createPost($post): Builder|Model
+    {
+        return $this->query()
+            ->create($post);
     }
 }

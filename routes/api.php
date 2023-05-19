@@ -51,13 +51,14 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     });
 
     Route::controller(PostsController::class)->group(function () {
-        Route::get('posts/{user_id}', 'index');
-        Route::get('{user_id}/post/{post_id}', 'postById');
-        Route::post('add-post/{user_id}', 'store');
-        Route::put('{user_id}/edit-post/{post}', 'update');
-        Route::delete('{user_id}/delete-post/{video}', 'destroy');
+        Route::get('posts', 'index');
+        Route::get('post/{post_id}', 'postById');
+        Route::post('add-post', 'store');
+        Route::put('edit-post/{post}', 'update');
+        Route::delete('delete-post/{post}', 'destroy');
     });
-    Route::get('posts', [FeedController::class, 'index']);
+
+    Route::get('feed', FeedController::class);
     Route::get('{post_id}/add-like/{user_id}', [LikesController::class, 'store']);
 
 });
