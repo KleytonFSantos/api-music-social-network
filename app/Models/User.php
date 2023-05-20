@@ -71,4 +71,9 @@ class User extends Authenticatable
     {
        return $this->hasMany(Post::class);
     }
+
+    public function findUserByEmail($email): User
+    {
+        $this->where('email', $email)->first();
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
@@ -38,17 +39,13 @@ class AuthController extends Controller
         ], 201);
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $request->validate([
-            'email'=>'required|string|email',
-            'password' => 'required|string'
-        ]);
 
-        $user = $this->model::where('email', $request->email)->first();
+        $user = $this->model->findUserByEmail($request->validated('email'));
 
         abort_if(
-            ! $user || !Hash::check($request->password, $user->password),
+            !Hash::check($request->validated('password'), $user->password),
             404,
             'The credentials are invalid'
             );
