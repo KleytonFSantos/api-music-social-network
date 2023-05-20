@@ -2,37 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Song;
 use App\Models\User;
 
 class AuthController extends Controller
 {
-    protected $model;
-    public function __construct(User $model)
+    public function __construct(private readonly User $model)
     {
-        $this->model = $model;
     }
 
-    /**
-     *  User Register Function
-     *@param  \Illuminate\Http\Request  $request
-    */
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        $request->validate([
-            'first_name' => 'required|string|',
-            'last_name' => 'required|string|',
-            'email'=>'required|string|email|unique:users,email',
-            'password' => 'required|string|confirmed|'
-        ]);
 
         $user = $this->model::Create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password)
+            'first_name' => $request->validated('first_name'),
+            'last_name' => $request->validated('last_name'),
+            'email' => $request->validated('email'),
+            'password' => Hash::make($request->validated('password'))
         ]);
 
         $token = $user->createToken('firsttoken')->plainTextToken;
@@ -44,10 +38,6 @@ class AuthController extends Controller
         ], 201);
     }
 
-    /**
-     *  User Login Function
-     *@param  \Illuminate\Http\Request  $request
-    */
     public function login(Request $request)
     {
         $request->validate([
@@ -71,10 +61,6 @@ class AuthController extends Controller
         ], 201);
     }
 
-    /**
-     *  User Logout Function
-     *
-    */
     public function logout()
     {
         auth()->user()->tokens()->delete();
@@ -84,22 +70,9 @@ class AuthController extends Controller
         ], 201);
     }
 
-    public function getUser()
+    public function getUser(): UserResource
     {
-        $user = auth()->user();
-        $userProfile = $user->userProfile;
-        $songs = Song::where('user_id', $user->id)->get();
-        $totalSongs = $songs->count();
-        return [
-            'user_id' => $user->id,
-            'email' => $user->email,
-            'songs' => $totalSongs,
-            'first_name' => $user->first_name,
-            'last_name' => $user->last_name,
-            'profile_image' => $userProfile->profile_image,
-            'city' => $userProfile->city,
-            'state' => $userProfile->state,
-            'description' => $userProfile->description
-        ];
+        $user = User::find(Auth::user()->id);
+        return new UserResource($user);
     }
 }
