@@ -2,87 +2,50 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SongRequest;
 use File;
 use Illuminate\Http\Request;
 use App\Models\Song;
 use App\Http\Services\UploadSongsService;
 use App\Models\User;
+use Illuminate\Http\Response;
 
 class SongsController extends Controller
 {
-    protected $model;
 
     public function __construct(
-        Song $model
+        protected Song $model
     ) {
-        $this->model = $model;
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @param int $user_id
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(int $user_id)
+    public function index(int $user_id): Response
     {
-        $songs = [];
-        $songs_by_user = $this->model::where('user_id', $user_id)->get();
+        $songsByUser = $this->model::where('user_id', $user_id)->get();
         $user = User::find($user_id);
 
-        foreach ($songs_by_user as $song) {
-            array_push($songs, $song);
-        }
 
-        return response()->json([
+        return response([
             'artist_id' => $user->id,
             'artist_name' => $user->first_name . ' ' . $user->last_name,
-            'songs' => $songs
+            'songs' => $songsByUser ?? []
         ], 200);
     }
 
-    /**
-     *  Store Songs Function
-     *@param  \Illuminate\Http\Request  $request
-     *
-     *@param  \App\Http\Services\UploadSongsService $service
-     */
-    public function store(Request $request, UploadSongsService $service)
+    public function store(SongRequest $request, UploadSongsService $service): Response
     {
-
         try {
-            $request->validate([
-                'title' => 'string|min:3|required',
-                'song' => 'file|mimes:application/octet-stream,audio/mpeg,mpga,mp3,wav',
-            ]);
-
             if ($request->hasFile('song')) {
-                $file = $request->file('song');
-                $original_name = $file->getClientOriginalName();
+                $file = $request->validated('song');
                 $service->uploadSongs($file);
             }
 
-            $song = $this->model::create([
-                'user_id' => auth()->user()->id,
-                'title' => $request->title,
-                'artist' => $request->artist,
-                'cover' => $request->coverImage,
-                'namefile' => $original_name,
-            ]);
+            $song = $this->model::create($request->validated());
             return response(['message' => 'Uploaded with success'], 201);
         } catch (\Exception $e) {
             abort(400, $e->getMessage());
         }
     }
 
-    /**
-     * Delete a song of the resource.
-     *
-     * @param int $user_id
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($user_id, $song)
     {
         try {

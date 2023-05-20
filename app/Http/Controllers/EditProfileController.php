@@ -2,45 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EditProfileRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\UserProfile;
 
 class EditProfileController extends Controller
 {
-    public function editProfile(Request $request)
+    public function editProfile(EditProfileRequest $request)
     {
-        $request->validate([
-            'first_name' => 'min:3',
-            'last_name' => 'min:3',
-        ]);
-
         try {
-
             $user = User::find(auth()->user()->id);
 
             $user->update([
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
+                'first_name' => $request->validated('first_name') ?? $user->last_name,
+                'last_name' => $request->validated('last_name') ?? $user->first_name,
             ]);
 
-            if ($user->userProfile) {
-                $user->userProfile->update([
-                   'profile_image' => $request->profile_image ?? $user->userProfile->profile_image,
-                   'description' => $request->description ?? $user->description,
-                   'city' => $request->city ?? $user->city,
-                   'state' => $request->state ?? $user->state,
-                ]);
-            } else {
-                $userProfile = UserProfile::create([
-                    'profile_image' => $request->profile_image,
-                    'description' => $request->description ?? $user->description,
-                    'city' => $request->city ?? $user->city,
-                    'state' => $request->state ?? $user->state,
-                    'user_id' => $user->id,
-                 ]);
-            }
-
+            $arrayUserProfile = tap([
+                'profile_image' => $request->validated('profile_image') ?? $user?->userProfile?->profile_image,
+                'description' => $request->validated('description') ?? $user?->description,
+                'city' => $request->validated('city') ?? $user?->city,
+                'state' => $request->validated('state') ?? $user?->state,
+                'user_id' => $user->id,
+            ], function ($data) use ($user) {
+                $user->userProfile()->updateOrCreate([], $data);
+            });
 
             return response([
                 'message'=>'Updated with success',

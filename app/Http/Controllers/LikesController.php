@@ -23,7 +23,7 @@ class LikesController extends Controller
                     'liked' => !$likeExists->liked
                 ]);
             } else {
-                $like = $this->model::create([
+                $this->model::create([
                     'user_id' => $user_id,
                     'post_id' => $post_id,
                     'liked' => true
