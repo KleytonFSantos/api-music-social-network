@@ -4,8 +4,7 @@ composer global require hirak/prestissimo
 composer install --no-dev --working-dir=/var/www/html
 
 # shellcheck disable=SC2164
-cd /var/www/html/storage/
-mkdir -p framework/{sessions,views,cache}
+mkdir -p /var/www/html/storage/framework/{sessions,views,cache}
 chmod -R 775 framework
 
 echo "Caching config..."
