@@ -11,10 +11,10 @@ chmod -R 775 /var/www/html/storage/framework/
 chmod -R gu+w /var/www/html/storage/
 chmod -R guo+w /var/www/html/storage/
 
-php artisan cache:clear
 echo "Caching config..."
 php artisan config:clear
 php artisan view:clear
+php artisan cache:clear
 
 echo "Caching routes..."
 php artisan route:cache
