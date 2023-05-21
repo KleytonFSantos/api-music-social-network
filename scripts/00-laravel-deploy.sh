@@ -4,6 +4,11 @@ composer install --no-dev --working-dir=/var/www/html
 
 # shellcheck disable=SC2164
 echo "Setting cache permissions..."
+chmod -R 777 /var/www/html/
+chmod -R 775 /var/www/html/
+chmod -R gu+w /var/www/html/
+chmod -R guo+w /var/www/html/
+mkdir -p /var/www/html/storage/framework/{sessions,views,cache}
 chmod -R 777 /var/www/html/storage/framework/cache
 chmod -R 777 /var/www/html/storage/framework/views/
 chmod -R 775 /var/www/html/storage/framework/views/
@@ -12,11 +17,6 @@ chmod -R 775 /var/www/html/storage/framework
 chmod -R 775 /var/www/html/storage/framework/cache
 chmod -R 775 /var/www/html/bootstrap/cache
 chmod -R 777 /var/www/html/bootstrap/cache
-chmod -R 777 /var/www/html/
-chmod -R 775 /var/www/html/
-chmod -R gu+w /var/www/html/
-chmod -R guo+w /var/www/html/
-mkdir -p /var/www/html/storage/framework/{sessions,views,cache}
 chmod -R 777 /var/www/html/bootstrap/cache
 chmod -R 775 /var/www/html/bootstrap/cache
 chmod -R gu+w  /var/www/html/bootstrap/cache
