@@ -8,7 +8,8 @@ chmod -R 777 /var/www/html/
 chmod -R 775 /var/www/html/
 chmod -R gu+w /var/www/html/
 chmod -R guo+w /var/www/html/
-rm -rf /var/www/html/bootstrap/cache
+chmod -R gu+w  /var/www/html/bootstrap/cache
+chmod -R guo+w /var/www/html/bootstrap/cache
 mkdir -p /var/www/html/storage/framework/{sessions,views,cache}
 chmod -R gu+w /var/www/html/storage/
 chmod -R guo+w /var/www/html/storage/
