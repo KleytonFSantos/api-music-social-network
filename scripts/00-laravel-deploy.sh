@@ -4,7 +4,7 @@ composer global require hirak/prestissimo
 composer install --no-dev --working-dir=/var/www/html
 
 # shellcheck disable=SC2164
-cd storage/
+cd ./storage/
 mkdir -p framework/{sessions,views,cache}
 chmod -R 775 framework
 
