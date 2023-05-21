@@ -10,9 +10,8 @@ mkdir -p /var/www/html/storage/framework/{sessions,views,cache}
 chmod -R 775 /var/www/html/storage/framework/
 
 echo "Caching config..."
-php artisan cache:clear
 php artisan config:clear
-php artisan view:clea
+php artisan view:clear
 
 echo "Caching routes..."
 php artisan route:cache
@@ -24,6 +23,8 @@ php artisan migrate --force
 
 echo "Setting cache permissions..."
 chmod -R 777 /var/www/html/storage/framework/cache
+chmod -R 777 /var/www/html/storage/framework/views/
+chmod -R 775 /var/www/html/storage/framework/views/
 chmod -R 777 /var/www/html/storage/framework
 chmod -R 775 /var/www/html/storage/framework
 chmod -R 775 /var/www/html/storage/framework/cache
