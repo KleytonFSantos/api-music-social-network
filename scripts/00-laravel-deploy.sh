@@ -8,7 +8,10 @@ chmod -R 777 /var/www/html/
 chmod -R 775 /var/www/html/
 mkdir -p /var/www/html/storage/framework/{sessions,views,cache}
 chmod -R 775 /var/www/html/storage/framework/
+chmod -R gu+w /var/www/html/storage/
+chmod -R guo+w /var/www/html/storage/
 
+php artisan cache:clear
 echo "Caching config..."
 php artisan config:clear
 php artisan view:clear
