@@ -4,7 +4,7 @@ composer global require hirak/prestissimo
 composer install --no-dev --working-dir=/var/www/html
 
 # shellcheck disable=SC2164
-cd ./storage/
+cd /var/www/html/storage/
 mkdir -p framework/{sessions,views,cache}
 chmod -R 775 framework
 
@@ -24,7 +24,7 @@ php artisan migrate --force
 echo "Setting cache permissions..."
 chmod -R 777 /var/www/html/storage/framework/cache
 chmod -R 777 /var/www/html/storage/framework
-chmod -R 775 storage/framework
-chmod -R 775 storage/framework/cache
-chmod -R 775 bootstrap/cache
+chmod -R 775 /var/www/html/storage/framework
+chmod -R 775 /var/www/html/storage/framework/cache
+chmod -R 775 /var/www/html/bootstrap/cache
 chmod -R 777 /var/www/html/bootstrap/cache
