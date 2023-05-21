@@ -2,26 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateVideoRequest;
 use Illuminate\Http\Request;
 use App\Models\Video;
+use Symfony\Component\HttpFoundation\Response;
 
 class VideosController extends Controller
 {
-    private $model;
-
     public function __construct(
-        Video $model
-    )
-    {
-        $this->model = $model;
+        private Video $model
+    ) {
     }
 
-    /**
-     *  Get Videos Function
-     * @param int $user_id
-     * @return \Illuminate\Http\Response
-    */
-    public function index($user_id)
+    public function index($user_id): Response
     {
         $videos = $this->model::where('user_id', $user_id)->get();
 
@@ -31,27 +24,11 @@ class VideosController extends Controller
         ]);
     }
 
-    /**
-     *  Store Videos Function
-     *
-     * @param int $user_id
-     * @param  \Illuminate\Http\Request  $request
-     *
-     * @return \Illuminate\Http\Response
-    */
-    public function store(Request $request, $user_id)
+
+    public function store(CreateVideoRequest $request, int $user_id): Response
     {
         try {
-            $request->validate([
-                'title' => 'required|min:3',
-                'video' => 'required|min:3',
-            ]);
-
-            $video = $this->model::create([
-                'title' => $request->title,
-                'path' => $request->video,
-                'user_id' => $user_id
-            ]);
+            $video = $this->model::create($request->validated());
 
             return response(['message' => 'Video created successfully'], 201);
         } catch( \Exception $e ) {
@@ -59,23 +36,14 @@ class VideosController extends Controller
         }
     }
 
-    /**
-     *  Destroy Videos Function
-     *
-     * @param int $user_id
-     * @param int $video
-     *
-     * @return \Illuminate\Http\Response
-    */
-    public function destroy( $user_id, $video )
+    public function destroy(int $user_id, Video $video): Response
     {
         try {
-            $videos_by_user = $this->model::where('user_id', $user_id)->where('id', $video)->first();
-            $videos_by_user->delete();
+            $video->delete();
 
             return response(['message' => 'Video deleted successfully'], 200);
         } catch (\Exception $e) {
-          return response(['message' => $e], 400);
+            return response(['message' => $e], 400);
         }
     }
 }

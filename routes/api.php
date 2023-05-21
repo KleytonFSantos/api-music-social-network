@@ -47,7 +47,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::controller(VideosController::class)->group(function () {
         Route::get('videos/{user_id}', 'index');
         Route::post('add-youtube-video/{user_id}', 'store');
-        Route::delete('{user_id}/delete-youtube-videos/{video}', 'destroy');
+        Route::delete('{user_id}/video/delete/{video}', 'destroy');
     });
 
     Route::controller(PostsController::class)->group(function () {
