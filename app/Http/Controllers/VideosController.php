@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 class VideosController extends Controller
 {
     public function __construct(
-        private Video $model
+        private readonly Video $model
     ) {
     }
 
@@ -30,7 +30,10 @@ class VideosController extends Controller
         try {
             $video = $this->model::create($request->validated());
 
-            return response(['message' => 'Video created successfully'], 201);
+            return response([
+                'message' => 'Video created successfully',
+                'video' => $video
+            ], 201);
         } catch( \Exception $e ) {
             abort(400, $e->getMessage());
         }
