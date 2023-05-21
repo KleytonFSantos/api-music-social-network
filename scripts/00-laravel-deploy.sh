@@ -11,3 +11,7 @@ php artisan route:cache
 
 echo "Running migrations..."
 php artisan migrate --force
+
+echo "Setting cache permissions..."
+chmod -R 777 /var/www/html/storage/framework/cache
+chmod -R 777 /var/www/html/bootstrap/cache
