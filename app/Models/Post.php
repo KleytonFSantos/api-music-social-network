@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use \Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
 class Post extends Model
@@ -25,7 +26,7 @@ class Post extends Model
        return $this->hasMany(Like::class)->where('liked', true);
     }
 
-    public function allPosts()
+    public function allPosts(): ?LengthAwarePaginator
     {
        return $this->select(
         'posts.id',

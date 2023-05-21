@@ -21,4 +21,11 @@ class Song extends Model
         'namefile',
         'user_id',
     ];
+
+    public function findSongById($user, $song): ?Song
+    {
+        return $this->query()
+            ->where('user_id', $user)->where('id', $song)->first();
+
+    }
 }

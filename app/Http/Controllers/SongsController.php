@@ -20,14 +20,12 @@ class SongsController extends Controller
 
     public function index(int $user_id): Response
     {
-        $songsByUser = $this->model::where('user_id', $user_id)->get();
         $user = User::find($user_id);
-
 
         return response([
             'artist_id' => $user->id,
             'artist_name' => $user->first_name . ' ' . $user->last_name,
-            'songs' => $songsByUser ?? []
+            'songs' => $user->song ?? []
         ], 200);
     }
 
@@ -49,8 +47,8 @@ class SongsController extends Controller
     public function destroy($user_id, $song)
     {
         try {
-            $songs_by_user = $this->model::where('user_id', $user_id)->where('id', $song)->first();
-            $deleteSong = File::delete(public_path('storage/songs/' . $user_id . '/' . $songs_by_user->namefile));
+            $songs_by_user = $this->model->findSongById($user_id, $song);
+            File::delete(public_path('storage/songs/' . $user_id . '/' . $songs_by_user->namefile));
             $songs_by_user->delete();
 
             return response(['message' => 'Song deleted successfully'], 200);
